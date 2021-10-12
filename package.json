@@ -1,0 +1,21 @@
+{
+	"name": "@pucelle/flit-basis",
+	"version": "1.3.0",
+	"description": "Basis libraries for `Flit`",
+	"author": "pucelle",
+	"license": "MIT",
+	"homepage": "https://github.com/pucelle/flit-basis",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pucelle/flit-basis.git"
+	},
+	"main": "out/index.js",
+	"scripts": {
+		"build": "tsc -b",
+		"watch": "tsc -b -w",
+		"prepublish": "tsc -b"
+	},
+	"devDependencies": {
+		"typescript": "^3.9.5"
+	}
+}
