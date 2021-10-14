@@ -1,6 +1,6 @@
-import {UpdatableUpdateOrder, QueueOfUpdatable} from './helpers/queue-of-updatable'
+import {QueueUpdateOrder, OrderedQueue} from './helpers/ordered-queue'
 import {InfiniteUpdatingValidator} from './helpers/infinite-updating-validator'
-import {Context, Updatable} from './helpers/types'
+import {MayContext, Updatable} from '../types'
 
 
 /*
@@ -38,7 +38,7 @@ enum UpdatingStage {
 
 
 /** Caches any updatable. */
-const queue: QueueOfUpdatable = new QueueOfUpdatable()
+const queue: OrderedQueue = new OrderedQueue()
 
 /** To validate updatable. */
 const validator: InfiniteUpdatingValidator = new InfiniteUpdatingValidator()
@@ -54,7 +54,7 @@ let updatingStage: UpdatingStage = UpdatingStage.NotStarted
  * When a component, a watcher, or any other updatable things should enqueue to update.
  * Updatable wil be sort by `context, order`, and then called `__updateImmediately` one by one.
  */
-export function enqueueUpdatableInOrder(upt: Updatable, context: Context, order: UpdatableUpdateOrder) {
+export function enqueueUpdatableInOrder(upt: Updatable, context: MayContext, order: QueueUpdateOrder) {
 	if (queue.has(upt)) {
 		return
 	}

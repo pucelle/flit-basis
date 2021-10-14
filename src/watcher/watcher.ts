@@ -1,7 +1,7 @@
 import {startUpdating, endUpdating, clearDependenciesOf} from '../observer'
 import {enqueueUpdatableInOrder} from '../queue'
-import {UpdatableUpdateOrder} from '../queue/helpers/queue-of-updatable'
-import {Context} from '../queue/helpers/types'
+import {QueueUpdateOrder} from '../queue/helpers/ordered-queue'
+import {MayContext} from '../types'
 
 
 /** 
@@ -18,8 +18,8 @@ export class Watcher<T = any> {
 	/** Callback to call after data may be changed. */
 	protected readonly callback: (newValue: T, oldValue: T | undefined) => void
 
-	/** Context to determine update order. */
-	protected readonly context: Context
+	/** To determine update order. */
+	protected readonly type: MayContext
 
 	/** Whether the watcher connected. */
 	protected connected: boolean = true
@@ -27,10 +27,10 @@ export class Watcher<T = any> {
 	/** Last value returned from `fn`. */
 	value: T
 
-	constructor(fn: () => T, callback: (newValue: T, oldValue: T | undefined) => void, context: Context) {
+	constructor(fn: () => T, callback: (newValue: T, oldValue: T | undefined) => void, type: MayContext) {
 		this.fn = fn
 		this.callback = callback
-		this.context = context
+		this.type = type
 		this.value = this.getNewValue()
 	}
 
@@ -49,7 +49,7 @@ export class Watcher<T = any> {
 			return
 		}
 		
-		enqueueUpdatableInOrder(this, this.context, UpdatableUpdateOrder.Watcher)
+		enqueueUpdatableInOrder(this, this.type, QueueUpdateOrder.Watcher)
 	}
 
 	/** Update current value immediately, also keeps consitant with the same method in `Component`. */
@@ -103,6 +103,6 @@ export class LazyWatcher<T = any> extends Watcher<T> {
 			return
 		}
 		
-		enqueueUpdatableInOrder(this, this.context, UpdatableUpdateOrder.Otherwise)
+		enqueueUpdatableInOrder(this, this.type, QueueUpdateOrder.Otherwise)
 	}
 }

@@ -1,5 +1,5 @@
 import {Watcher} from '../../watcher/watcher'
-import {Updatable} from './types'
+import {Updatable} from '../../types'
 
 
 /** Validate update times for updatable. */

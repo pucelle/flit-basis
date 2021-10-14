@@ -1,4 +1,4 @@
-import {Context} from '../queue/helpers/types'
+import {MayContext} from '../types'
 import {Watcher} from './watcher'
 
 
@@ -8,8 +8,8 @@ import {Watcher} from './watcher'
  */
 export class WatcherGroup {
 
-	/** Context to determine update order. */
-	protected readonly context: Context | null
+	/** To determine update order. */
+	protected readonly type: MayContext
 
 	/** All watchers. */
 	protected watchers: Set<Watcher> = new Set()
@@ -17,8 +17,8 @@ export class WatcherGroup {
 	/** Whether connected. */
 	protected connected: boolean = true
 
-	constructor(context: Context | null) {
-		this.context = context
+	constructor(type: MayContext) {
+		this.type = type
 	}
 
 	/** Add a watcher to current group, and keeps it's connected state same with current group. */
@@ -75,7 +75,7 @@ export class WatcherGroup {
 
 	/** Create a new watcher and add to current group. */
 	watch<T>(fn: () => T, callback: (newValue: T, oldValue: T | undefined) => void): () => void {
-		let watcher = new Watcher(fn, callback, this.context)
+		let watcher = new Watcher(fn, callback, this.type)
 		this.add(watcher)
 
 		return () => {
@@ -85,7 +85,7 @@ export class WatcherGroup {
 
 	/** Create a new watcher and add to current group, calls `callback` immediately. */
 	watchImmediately<T>(fn: () => T, callback: (newValue: T, oldValue: T | undefined) => void): () => void {
-		let watcher = new Watcher(fn, callback, this.context)
+		let watcher = new Watcher(fn, callback, this.type)
 		callback.call(this, watcher.value, undefined)
 		this.add(watcher)
 
@@ -101,7 +101,7 @@ export class WatcherGroup {
 			unwatch()
 		}
 
-		let watcher = new Watcher(fn, wrappedCallback, this.context)
+		let watcher = new Watcher(fn, wrappedCallback, this.type)
 		this.add(watcher)
 
 		let unwatch = () => {
@@ -121,7 +121,7 @@ export class WatcherGroup {
 		}
 
 		let unwatch: () => void
-		let watcher = new Watcher(fn, wrappedCallback, this.context)
+		let watcher = new Watcher(fn, wrappedCallback, this.type)
 
 		if (watcher.value) {
 			watcher.disconnect()
