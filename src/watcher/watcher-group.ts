@@ -14,7 +14,7 @@ export class WatcherGroup {
 	/** All watchers. */
 	protected watchers: Set<Watcher> = new Set()
 
-	/** Whether connected. */
+	/** Whether connected, default value is `true`. */
 	protected connected: boolean = true
 
 	constructor(type: MayContext) {
