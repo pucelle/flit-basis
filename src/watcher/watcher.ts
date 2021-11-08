@@ -62,7 +62,7 @@ export class Watcher<T = any> {
 
 		let newValue = this.getNewValue()
 
-		// Data may change, doesn't validate object.
+		// Data may change, doesn't validate object sub properties.
 		if (newValue !== this.value || typeof newValue === 'object') {
 			let oldValue = this.value
 			this.callback.call(null, this.value = newValue, oldValue)
