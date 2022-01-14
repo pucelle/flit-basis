@@ -39,8 +39,10 @@ const proxyHandler = {
 	},
 
 	set(com: any, prop: any, value: any): true {
-		com[prop] = value
-		notifyComPropertySet(com, prop)
+		if (com[prop] !== value) {
+			com[prop] = value
+			notifyComPropertySet(com, prop)
+		}
 		return true
 	},
 

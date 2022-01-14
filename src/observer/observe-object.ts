@@ -32,8 +32,13 @@ const proxyHandler = {
 	},
 
 	set(obj: any, prop: any, value: any): true {
-		obj[prop] = value
-		notifyObjectSet(obj)
+
+		// After some tests I found if doesn't compare,
+		// sometimes much more updating loops will happen.
+		if (obj[prop] !== value) {
+			obj[prop] = value
+			notifyObjectSet(obj)
+		}
 
 		return true
 	},

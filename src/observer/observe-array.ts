@@ -45,8 +45,10 @@ const proxyHandler = {
 	},
 
 	set(array: any, prop: any, value: any): true {
-		(array as any)[prop] = value
-		notifyObjectSet(array)
+		if ((array as any)[prop] !== value) {
+			(array as any)[prop] = value
+			notifyObjectSet(array)
+		}
 
 		return true
 	},
