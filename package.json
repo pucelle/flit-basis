@@ -11,11 +11,15 @@
 	},
 	"main": "out/index.js",
 	"scripts": {
+		"test": "jest",
 		"build": "tsc -b",
 		"watch": "tsc -b -w",
 		"prepublish": "tsc -b"
 	},
 	"devDependencies": {
-		"typescript": "^3.9.5"
+		"@types/jest": "^27.4.0",
+		"jest": "^26.6.3",
+		"ts-jest": "^26.4.4",
+		"typescript": "^4.3.5"
 	}
 }
