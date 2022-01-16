@@ -5,10 +5,13 @@ import {MayContext} from '../types'
 
 
 /** 
- * A watcher watchs a function returned value and trigger callback if the value is changed.
- * You need to know that when callback was called, it doesn't ensure the watched datas are truly changed,
- * especially the returned value is an object, so you may validate it again if needed.
- * You can create watcher from `context.watch...` or `globalWatcherGroup.watch...`.
+ * A watcher watchs the returned value of a function,
+ * and triggers callback if this value is changed.
+ * You need to know that when callback was called,
+ * it doesn't ensure the watching data is truly changed,
+ * especially when the returned value is object type.
+ * So you may need validate it again if needed.
+ * You can create a Watcher from `context.watch...` or `globalWatcherGroup.watch...`.
  */
 export class Watcher<T = any> {
 
@@ -34,7 +37,7 @@ export class Watcher<T = any> {
 		this.value = this.getNewValue()
 	}
 
-	/** Get a new value from `fn`. */
+	/** Get a new returned value from `fn`. */
 	protected getNewValue(): T {
 		startUpdating(this)
 		let newValue = this.fn.call(null)
@@ -43,7 +46,7 @@ export class Watcher<T = any> {
 		return newValue
 	}
 
-	/** When detected dependencies changed, enqueue to update later. */
+	/** When detected dependencies was changed, enqueue the watch to update it later. */
 	update() {
 		if (!this.connected) {
 			return
@@ -52,9 +55,10 @@ export class Watcher<T = any> {
 		enqueueUpdatableInOrder(this, this.type, QueueUpdateOrder.Watcher)
 	}
 
-	/** Update current value immediately, also keeps consitant with the same method in `Component`. */
+	/** Update current value immediately. keeps consitant with the same method in `Component`. */
 	__updateImmediately() {
-		// Don't update after disconnected, or the watcher will be observed and do meaningless updating.
+		
+		// No need to update after disconnected, or the watcher will be observed and do meaningless updating.
 
 		if (!this.connected) {
 			return
@@ -69,7 +73,7 @@ export class Watcher<T = any> {
 		}
 	}
 
-	/** Gives a readable info about the watcher. */
+	/** Gives a unique function string about the watcher. */
 	toString() {
 		return this.fn.toString()
 	}
@@ -82,7 +86,7 @@ export class Watcher<T = any> {
 		}
 	}
 
-	/** Disconnect current watcher with it's denpendencies. */
+	/** Disconnect current watcher, drops it's denpendencies. */
 	disconnect() {
 		if (this.connected) {
 			this.connected = false
@@ -94,7 +98,8 @@ export class Watcher<T = any> {
 
 /** 
  * Lazy watchers update later than normal watchers and components.
- * So data and nodes are stabled now.
+ * So data and nodes are update completed and become stable now.
+ * Used by some special parts which should wait for normal data becomes stable, like `repeat` directive.
  */
 export class LazyWatcher<T = any> extends Watcher<T> {
 

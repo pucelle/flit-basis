@@ -10,10 +10,10 @@ export interface Updatable {
  */
 export interface UpdatableContext extends Updatable {
 
-	/** Get the document element the component attacted. */
+	/** Get the document's element that current component attacted. */
 	__getAttactedDomElement(): Element
 
-	/** Compare two components in same component system. */
+	/** Compare two components in the same component system. */
 	__comparePositionWith(com: Updatable): number
 }
 
