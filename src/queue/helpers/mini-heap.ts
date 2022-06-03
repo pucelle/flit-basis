@@ -45,7 +45,7 @@ export class MiniHeap<T> {
 		return firstValue
 	}
 
-	/** Swap value with parent if needed. */
+	/** Swap value in index with its parent if needed. */
 	shiftUp(index: number) {
 		if (index === 0) {
 			return
@@ -63,7 +63,7 @@ export class MiniHeap<T> {
 		}
 	}
 
-	/** Swap value with one child if needed. */
+	/** Swap value in index with one of its child if needed. */
 	shiftDown(index: number) {
 		// If index is 1-based, `leftIndex` is `index << 1`.
 		let rightIndex = (index + 1) << 1
